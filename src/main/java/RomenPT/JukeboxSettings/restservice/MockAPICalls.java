@@ -58,11 +58,12 @@ public class MockAPICalls {
             List<HashMap<String, String>> allComponents = objectMapper.readValue(componentJson, new TypeReference<>(){});
 
             //create set of all components, no duplicates
-            Set<String> componentNames = new TreeSet<>();
+            TreeSet<String> componentNames = new TreeSet<>();
             for (HashMap<String, String> h : allComponents) {
                 componentNames.add(h.get("name"));
             }
             j.setComponents(componentNames);
+            Jukebox.modelTypes.add(j.getModel());
         }
         return allJukeboxes;
     }
@@ -83,7 +84,7 @@ public class MockAPICalls {
         //create a set of all requirements and set it to the setting, no duplicates
         for (JukeboxSetting s : allSettings) {
             String requirementJson = objectMapper.writeValueAsString(s.getRequirementObject());
-            Set<String> settingNames = objectMapper.readValue(requirementJson, new TypeReference<>(){});
+            TreeSet<String> settingNames = objectMapper.readValue(requirementJson, new TypeReference<>(){});
             s.setRequirements(settingNames);
         }
         return allSettings;

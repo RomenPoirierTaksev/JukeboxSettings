@@ -3,6 +3,7 @@ package RomenPT.JukeboxSettings.restservice;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class Jukebox {
 
@@ -10,6 +11,7 @@ public class Jukebox {
     private final String model;
     private final Object components;
     private Set<String> componentSet;
+    public static Set<String> modelTypes = new TreeSet<>();
 
     /**
      * JukeBox constructor

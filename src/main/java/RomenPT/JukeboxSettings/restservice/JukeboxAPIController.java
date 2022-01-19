@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,22 +23,38 @@ public class JukeboxAPIController {
         Pattern pattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
         Matcher matcher = pattern.matcher(settingId);
         if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid setting id.");
+        boolean modelSpecified = !model.equals("");
         List<JukeboxSetting> allSettings = MockAPICalls.getSettings();
+        JukeboxSetting selectedSetting = null;
         boolean notInSettings = true;
-        for (JukeboxSetting j : allSettings) {
-            if(!j.getId().equals(settingId)){
+        for (JukeboxSetting s : allSettings) {
+            if(s.getId().equals(settingId)){
                 notInSettings = false;
+                selectedSetting = s;
                 break;
             }
         }
         if(notInSettings){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No setting with matching id.");
         }
-        return ResponseEntity.status(HttpStatus.OK).body(MockAPICalls.getJukeboxes().toString());
+        List<Jukebox> allJukeboxes = MockAPICalls.getJukeboxes();
+        if(!Jukebox.modelTypes.contains(model) && modelSpecified) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid model type.");
+        List<String> selectedJukeboxes = new ArrayList<>();
+        for (Jukebox j : allJukeboxes) {
+            Set<String> jukeboxComponents = j.getComponents();
+            if(!modelSpecified && jukeboxComponents.containsAll(selectedSetting.getRequirements())){
+                selectedJukeboxes.add(j.getId());
+            }
+            else if(modelSpecified && j.getModel().equals(model) && jukeboxComponents.containsAll(selectedSetting.getRequirements())){
+                selectedJukeboxes.add(j.getId());
+            }
+        }
+        Collections.sort(selectedJukeboxes);
+        return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.toArray()));
     }
 
     @GetMapping("/settings")
-    public List<JukeboxSetting> settings() throws ExecutionException, InterruptedException, JsonProcessingException {
-        return MockAPICalls.getSettings();
+    public String settings() throws ExecutionException, InterruptedException, JsonProcessingException {
+        return "";
     }
 }
