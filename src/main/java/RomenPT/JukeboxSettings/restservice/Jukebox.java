@@ -8,19 +8,19 @@ public class Jukebox {
 
     private final String id;
     private final String model;
-    private final Object componentObject;
-    private Set<String> components;
+    private final Object components;
+    private Set<String> componentSet;
 
     /**
      * JukeBox constructor
      * @param id the id of the jukebox
      * @param model the model of the jukebox
-     * @param componentObject the components of the jukebox
+     * @param components the components of the jukebox
      */
-    public Jukebox(@JsonProperty("id") String id,@JsonProperty("model") String model,@JsonProperty("components") Object componentObject) {
+    public Jukebox(@JsonProperty("id") String id,@JsonProperty("model") String model,@JsonProperty("components") Object components) {
         this.id = id;
         this.model = model;
-        this.componentObject = componentObject;
+        this.components = components;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Jukebox {
      * @return jukebox component object as an objeect
      */
     public Object getComponentObject(){
-        return componentObject;
+        return components;
     }
 
     /**
@@ -52,7 +52,7 @@ public class Jukebox {
      * @return jukebox components as a set of strings
      */
     public Set<String> getComponents(){
-        return components;
+        return componentSet;
     }
 
     /**
@@ -60,6 +60,6 @@ public class Jukebox {
      * @param c a set of all components of the jukebox
      */
     public void setComponents(Set<String> c){
-        this.components = c;
+        this.componentSet = c;
     }
 }

@@ -9,12 +9,9 @@ import java.util.concurrent.ExecutionException;
 @SpringBootApplication
 public class JukeboxSettingsApplication {
 
-	public static void main(String[] args) throws ExecutionException, InterruptedException, JsonProcessingException{
+	public static void main(String[] args){
 
-		//SpringApplication.run(JukeboxSettingsApplication.class, args);
-		for (JukeboxSetting s : MockAPICalls.getSettings()) {
-			System.out.println(s.getId() + " " + s.getRequirements());
-		}
+		SpringApplication.run(JukeboxSettingsApplication.class, args);
 	}
 
 }
