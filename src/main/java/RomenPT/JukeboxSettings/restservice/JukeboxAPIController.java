@@ -37,12 +37,12 @@ public class JukeboxAPIController {
                                  @RequestParam(value = "limit", defaultValue = "") String limit) throws ExecutionException, JsonProcessingException, InterruptedException {
 
         //checek if the id is empty
-        if(settingId.equals("")) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Please enter a setting id as /jukebox?id=...");
+        if(settingId.equals("")) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Please enter a setting id as /jukebox?id=...");
 
         //check if the id is of the valid format
         Pattern pattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
         Matcher matcher = pattern.matcher(settingId);
-        if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid setting id.");
+        if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND+ ": Invalid setting id.");
 
         //find the setting with specified id
         boolean modelSpecified = !model.equals("");
@@ -57,11 +57,11 @@ public class JukeboxAPIController {
             }
         }
         if(notInSettings){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No setting with matching id.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND + ": No setting with matching id.");
         }
 
         List<Jukebox> allJukeboxes = MockAPICalls.getJukeboxes();
-        if(!Jukebox.modelTypes.contains(model) && modelSpecified) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid model type.");
+        if(!Jukebox.modelTypes.contains(model) && modelSpecified) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND + ": Invalid model type.");
         List<String> selectedJukeboxes = new ArrayList<>();
 
         //check all jukeboxes components against required components of setting
