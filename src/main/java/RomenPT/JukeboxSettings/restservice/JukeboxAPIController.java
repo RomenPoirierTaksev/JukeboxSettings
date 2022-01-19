@@ -50,11 +50,59 @@ public class JukeboxAPIController {
             }
         }
         Collections.sort(selectedJukeboxes);
-        return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.toArray()));
-    }
+        boolean needLimit = !limit.equals("");
+        boolean needOffset = !offset.equals("");
+        if(needOffset){
+            try{
+                if(Integer.parseInt(offset) < 0){
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Offset must greater than 0.");
+                }
+            }
+            catch (Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Offset must be an integer.");
+            }
 
-    @GetMapping("/settings")
-    public String settings() throws ExecutionException, InterruptedException, JsonProcessingException {
-        return "";
+        }
+        if(needLimit){
+            try{
+                if(Integer.parseInt(limit) < 0){
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Limit must greater than 0.");
+                }
+            }
+            catch (Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Limit must be an integer.");
+            }
+        }
+        if(needLimit && needOffset){
+            try{
+                int newOffset = Integer.parseInt(offset);
+                int newLimit = Integer.parseInt(limit);
+                return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.subList(newOffset, newLimit).toArray()));
+            }
+            catch(Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Limit or offset is greater than total amount of jukeboxes.");
+            }
+
+        }
+        if(needLimit){
+            try{
+                int newLimit = Integer.parseInt(limit);
+                return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.subList(0, newLimit).toArray()));
+            }
+            catch(Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Limit is greater than total amount of jukeboxes.");
+            }
+        }
+        if(needOffset){
+            try{
+                int newOffset = Integer.parseInt(offset);
+                return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.subList(newOffset, selectedJukeboxes.size()).toArray()));
+            }
+            catch(Exception e){
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE + ": Offset is greater than total amount of jukeboxes.");
+            }
+
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(Arrays.toString(selectedJukeboxes.toArray()));
     }
 }
