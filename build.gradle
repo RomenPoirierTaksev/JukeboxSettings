@@ -6,17 +6,19 @@ plugins {
 
 group = 'RomenPT'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = '17'
 
 repositories {
 	mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.6.2'
+	testImplementation 'junit:junit:4.13.2'
+	testImplementation('org.springframework.boot:spring-boot-starter-test:2.6.2')
+	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.8.2')
 }
 
-test {
+tasks.test {
 	useJUnitPlatform()
 }
