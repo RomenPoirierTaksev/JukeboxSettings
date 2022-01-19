@@ -25,7 +25,7 @@ public class Jukebox {
 
     /**
      * Getter for the id of the jukebox
-     * @return jukebox id
+     * @return jukebox id as a string
      */
     public String getId() {
         return id;
@@ -33,7 +33,7 @@ public class Jukebox {
 
     /**
      * Getter for the model of the jukebox
-     * @return jukebox model
+     * @return jukebox model as a string
      */
     public String getModel(){
         return model;
@@ -41,7 +41,7 @@ public class Jukebox {
 
     /**
      * Getter for the component object of the jukebox
-     * @return jukebox component object
+     * @return jukebox component object as an objeect
      */
     public Object getComponentObject(){
         return componentObject;
@@ -49,14 +49,14 @@ public class Jukebox {
 
     /**
      * Getter for the components of the jukebox
-     * @return jukebox components
+     * @return jukebox components as a set of strings
      */
     public Set<String> getComponents(){
         return components;
     }
 
     /**
-     * Sets the components of the jukebox
+     * Sets the components of the jukebox to the passed set
      * @param c a set of all components of the jukebox
      */
     public void setComponents(Set<String> c){

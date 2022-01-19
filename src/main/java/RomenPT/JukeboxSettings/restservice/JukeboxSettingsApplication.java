@@ -12,9 +12,8 @@ public class JukeboxSettingsApplication {
 	public static void main(String[] args) throws ExecutionException, InterruptedException, JsonProcessingException{
 
 		//SpringApplication.run(JukeboxSettingsApplication.class, args);
-		for (Jukebox j:
-				MockAPICalls.getJukeboxes()) {
-			System.out.println(j.getId() + " " + j.getModel() + " " + j.getComponents());
+		for (JukeboxSetting s : MockAPICalls.getSettings()) {
+			System.out.println(s.getId() + " " + s.getRequirements());
 		}
 	}
 
