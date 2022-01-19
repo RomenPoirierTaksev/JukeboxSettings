@@ -15,11 +15,17 @@ import java.util.regex.Pattern;
 @RestController
 public class JukeboxAPIController {
 
+    @GetMapping("")
+    public String greeting(){
+        return "Hello! Please enter a query with a setting id(as /jukebox?id=) to check for supported jukeboxes.";
+    }
+
     @GetMapping("/jukebox")
-    public ResponseEntity<String> jukebox(@RequestParam(value = "id") String settingId,
+    public ResponseEntity<String> jukebox(@RequestParam(value = "id", defaultValue = "") String settingId,
                                  @RequestParam(value = "model", defaultValue = "") String model,
                                  @RequestParam(value = "offset", defaultValue = "") String offset,
                                  @RequestParam(value = "limit", defaultValue = "") String limit) throws ExecutionException, JsonProcessingException, InterruptedException {
+        if(settingId.equals("")) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Please enter a setting id as /jukebox?id=...");
         Pattern pattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
         Matcher matcher = pattern.matcher(settingId);
         if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid setting id.");
