@@ -42,7 +42,7 @@ public class JukeboxAPIController {
         //check if the id is of the valid format
         Pattern pattern = Pattern.compile("[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}");
         Matcher matcher = pattern.matcher(settingId);
-        if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(HttpStatus.NOT_FOUND+ ": Invalid setting id.");
+        if(!matcher.find()) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(HttpStatus.NOT_ACCEPTABLE+ ": Invalid setting id.");
 
         //find the setting with specified id
         boolean modelSpecified = !model.equals("");
